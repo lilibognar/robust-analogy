@@ -252,30 +252,26 @@ for alph in all_prob.item().keys(): #GOES THROUGH ALL ALPHABETS?
 		#	save_fname += '_sentence'
 		#if args.noprompt:
 		#	save_fname += '_noprompt'
-		s#ave_fname += '.npz'
+		#ave_fname += '.npz'
 		#np.savez(save_fname, all_prob_type_responses=response_dict, allow_pickle=True)
 		#np.savez(save_fname, all_prob_type_responses=response_dict)
 
-		# Save
-        safe_model = model_name.replace("/", "_")
-        path = f"MODEL_{safe_model}_prob_predictions_multi_alph/{args.gen}"
-        check_path(path)
+				# Save
+		safe_model = model_name.replace("/", "_")
+		path = f"MODEL_{safe_model}_prob_predictions_multi_alph/{args.gen}"
+		check_path(path)
 
-        save_fname = f"./{path}/results_{args.num_permuted}_multi_alph_gptprobs"
-        if args.promptstyle:
-            save_fname += f"_{args.promptstyle}"
-        if args.sentence:
-            save_fname += "_sentence"
-        if args.noprompt:
-            save_fname += "_noprompt"
-        save_fname += ".npz"
+		save_fname = f"./{path}/results_{args.num_permuted}_multi_alph_gptprobs"
+		if args.promptstyle:
+			save_fname += f"_{args.promptstyle}"
+		if args.sentence:
+			save_fname += "_sentence"
+		if args.noprompt:
+			save_fname += "_noprompt"
+		save_fname += ".npz"
 
-        np.savez(save_fname, all_prob_type_responses=response_dict)
-        print("Saved to:", save_fname)
-
+		np.savez(save_fname, all_prob_type_responses=response_dict)
+		print("Saved to:", save_fname)
 		## check the output explain the code and what it does 
-
-		
-
 
 
