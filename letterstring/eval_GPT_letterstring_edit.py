@@ -7,9 +7,12 @@ import sys
 from together import Together
 
 
+#def check_path(path):
+	#if not os.path.exists(path):
+		#os.mkdir(path)
+
 def check_path(path):
-	if not os.path.exists(path):
-		os.mkdir(path)
+    os.makedirs(path, exist_ok=True)
 
 # Settings
 parser = argparse.ArgumentParser()
@@ -65,15 +68,28 @@ kwargs = {
 #NOTES FOR ME: tempreture zero check why
 # here gpt model change? or together ai change? if yes how
 #
-# Load all problems
-if args.gen == 'gen':
-	all_prob = np.load(f'./problems/{args.gen}/all_prob_{args.num_permuted}_7_gpt_human_alphs.npz', allow_pickle=True)['all_prob']
-elif args.gen == 'nogen':
-	all_prob = np.load(f'./problems/{args.gen}/all_prob_{args.num_permuted}_7_human.npz', allow_pickle=True)['all_prob']
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # .../letterstring
+PROB_DIR = os.path.join(BASE_DIR, "problems", args.gen)
+
+if args.gen == "gen":
+    fname = os.path.join(PROB_DIR, f"all_prob_{args.num_permuted}_7_gpt_human_alphs.npz")
+elif args.gen == "nogen":
+    fname = os.path.join(PROB_DIR, f"all_prob_{args.num_permuted}_7_human.npz")
+else:
+    raise ValueError("--gen must be 'gen' or 'nogen'")
+
+print("Loading problems from:", fname)
+all_prob = np.load(fname, allow_pickle=True)["all_prob"]
 
 response_dict={}
 
-#NOTE FOR MYSELF: 
+#if args.gen == 'gen':
+    #fname = os.path.join(PROB_DIR, f'all_prob_{args.num_permuted}_7_gpt_human_alphs.npz')
+#elif args.gen == 'nogen':
+    #fname = os.path.join(PROB_DIR, f'all_prob_{args.num_permuted}_7_human.npz')
+
+#all_prob = np.load(fname, allow_pickle=True)['all_prob']
 
 for alph in all_prob.item().keys(): #GOES THROUGH ALL ALPHABETS?
 	print(alph)
@@ -91,7 +107,8 @@ for alph in all_prob.item().keys(): #GOES THROUGH ALL ALPHABETS?
 	print(alph_string)
 
 	# Evaluate
-	N_trials_per_prob_type = 10 
+	#Decrease the number for now
+	N_trials_per_prob_type = 1 
 	#IT WILL TEST 10 EXAMPLES OF ALL TASK EXAMPLES? 
 	# for each problem type (e.g. extend sequence, successor, etc.) the script will test 10 examples (10 different items) for the current alphabet.
 	#10 individual analogy problems 
@@ -236,7 +253,11 @@ for alph in all_prob.item().keys(): #GOES THROUGH ALL ALPHABETS?
 		if args.noprompt:
 			save_fname += '_noprompt'
 		save_fname += '.npz'
-		np.savez(save_fname, all_prob_type_responses=response_dict, allow_pickle=True)
+		#np.savez(save_fname, all_prob_type_responses=response_dict, allow_pickle=True)
+		np.savez(save_fname, all_prob_type_responses=response_dict)
+
+
+		## check the output explain the code and what it does 
 
 		
 
